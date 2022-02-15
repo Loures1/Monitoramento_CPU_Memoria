@@ -6,9 +6,14 @@ DATA_SIZE = (600, 270)
 DELAY = 1000
 
 
-coluna1 =   [
-            [sg.Button('CPU')],
-            [sg.Button('Memória')]
+graph_cpu = [sg.Graph((GRAPH_SIZE[0]/5, GRAPH_SIZE[1]/5), (0, 0), (DATA_SIZE[0]/5, DATA_SIZE[1]/5), background_color = 'white', key = 'cpu_graph')]
+botao_cpu = [sg.Button('CPU')]
+graph_memoria = [sg.Graph((GRAPH_SIZE[0]/5, GRAPH_SIZE[1]/5), (0, 0), (DATA_SIZE[0]/5, DATA_SIZE[1]/5), background_color = 'white', key = 'memoria_graph')]
+botao_memoria = [sg.Button('Memória')]
+
+coluna1 =  [
+            [sg.Column([graph_cpu], element_justification='c'), sg.Column([botao_cpu], element_justification='c')],
+            [sg.Column([graph_memoria], element_justification='c'), sg.Column([botao_memoria], element_justification='c')]                
 ]
 
 coluna2 =   [       
