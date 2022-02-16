@@ -1,14 +1,15 @@
 import PySimpleGUI as sg
 import Monitoramento
 
-GRAPH_SIZE = (600, 270)
-DATA_SIZE = (600, 270)
+GRAPH_SIZE = (120, 54)
+DATA_SIZE = (120, 54)
+STEP_SIZE = 2
 DELAY = 1000
 
 
-graph_cpu = [sg.Graph((GRAPH_SIZE[0]/5, GRAPH_SIZE[1]/5), (0, 0), (DATA_SIZE[0]/5, DATA_SIZE[1]/5), background_color = 'white', key = 'cpu_graph')]
+graph_cpu = [sg.Graph(GRAPH_SIZE, (0, 0), DATA_SIZE, background_color = 'white', key = 'cpu_graph')]
 botao_cpu = [sg.Button('CPU')]
-graph_memoria = [sg.Graph((GRAPH_SIZE[0]/5, GRAPH_SIZE[1]/5), (0, 0), (DATA_SIZE[0]/5, DATA_SIZE[1]/5), background_color = 'white', key = 'memoria_graph')]
+graph_memoria = [sg.Graph(GRAPH_SIZE, (0, 0), DATA_SIZE, background_color = 'white', key = 'memoria_graph')]
 botao_memoria = [sg.Button('Memória')]
 
 coluna1 =  [
@@ -19,7 +20,7 @@ coluna1 =  [
 coluna2 =   [       
             [sg.Text('', key = 'titulo')],                                                                                                                     
             [sg.Text('%utilização                                                                                                                                   100%')],
-            [sg.Frame('', [[sg.Graph(GRAPH_SIZE, (0, 0), DATA_SIZE, key = 'graph')]])],
+            [sg.Frame('', [[sg.Graph((GRAPH_SIZE[0]*5, GRAPH_SIZE[1]*5), (0, 0), (DATA_SIZE[0]*5, DATA_SIZE[1]*5), key = 'graph')]])],
             [sg.Text('60 segudos                                                                                                                                       0')]
 ]          
 layout =    [
@@ -47,8 +48,8 @@ while True:
             if not graph_cpu:
                 window['titulo'].update('CPU')
                 window['graph'].Erase()
-                x, y = GRAPH_SIZE[0], 0
-                lastx, lasty = GRAPH_SIZE[0] - step_size, 0
+                x, y = GRAPH_SIZE[0]*5, 0
+                lastx, lasty = GRAPH_SIZE[0]*5 - step_size, 0
                 graph_cpu = True
                 graph_memoria = False
 
@@ -62,8 +63,8 @@ while True:
         if not graph_memoria:
             window['titulo'].update(event)       
             window['graph'].Erase()
-            x, y = GRAPH_SIZE[0], 0
-            lastx, lasty = GRAPH_SIZE[0] - step_size, 0
+            x, y = GRAPH_SIZE[0]*5, 0
+            lastx, lasty = GRAPH_SIZE[0]*5 - step_size, 0
             graph_memoria = True
             graph_cpu = False
 
