@@ -12,6 +12,7 @@ class Grafico:
         self.x = self.x = self.graph_size[0]
         self.lastx = self.graph_size[0] - self.step_size 
         self.lasty = [0]
+        self.y = 0
 
     def escrevendo_Grafico(self, y):
         self.y = (y*self.graph_size[1])/100
