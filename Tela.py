@@ -34,16 +34,21 @@ layout =    [
 
 window = sg.Window('Monitoramento', layout)
 
+auto = 0
 auto_cpu = False
 auto_memoria = False
 principal.lasty = []
 
 while True:
-    event, values = window.read(timeout = DELAY)
+    event, values = window.read(timeout = DELAY, timeout_key= 1)
 
     if event == sg.WIN_CLOSED:
         break
     
+
+    if event == 1:
+        auto += 1
+
     cpu.escrevendo_Grafico(Monitoramento.CPU())
     window['cpu_graph'].move(-cpu.step_size, 0 )
     window['cpu_graph'].draw_line((cpu.lastx, cpu.lasty[-1]), (cpu.x, cpu.y), width = 1)
@@ -54,7 +59,7 @@ while True:
     window['memoria_graph'].draw_line((memoria.lastx, memoria.lasty[-1]), (memoria.x, memoria.y), width = 1)
     memoria.lasty.append(memoria.y)
 
-    if event == 'CPU' or auto_cpu == True:
+    if event == 'CPU' or auto_cpu == True or auto == 1:
         
         if auto_cpu == True:
             principal.y = cpu.lasty[-1]
