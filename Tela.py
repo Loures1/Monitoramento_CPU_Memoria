@@ -34,7 +34,8 @@ layout =    [
 
 window = sg.Window('Monitoramento', layout)
 
-auto = False
+auto_cpu = False
+auto_memoria = False
 
 
 while True:
@@ -44,13 +45,54 @@ while True:
         break
     
     cpu.escrevendo_Grafico(Monitoramento.CPU())
-    window['cpu_graph'].Move(-cpu.step_size, 0 )
+    window['cpu_graph'].move(-cpu.step_size, 0 )
     window['cpu_graph'].draw_line((cpu.lastx, cpu.lasty[-1]), (cpu.x, cpu.y), width = 1)
     cpu.lasty.append(cpu.y)
 
     memoria.escrevendo_Grafico(Monitoramento.memoria()[2])
-    window['memoria_graph'].Move(-memoria.step_size, 0)
+    window['memoria_graph'].move(-memoria.step_size, 0)
     window['memoria_graph'].draw_line((memoria.lastx, memoria.lasty[-1]), (memoria.x, memoria.y), width = 1)
     memoria.lasty.append(memoria.y)
+
+    if event == 'CPU' or auto_cpu == True:
+        
+        if  not auto_cpu:
+            window['principal_graph'].erase() 
+            auto_memoria = False
+            auto_cpu = True
+            principal.lasty.remove(0)
+            principal.lasty += cpu.lasty
+            i = 0
+            for principal.y in principal.lasty[1::]:
+                window['principal_graph'].move(-principal.step_size, 0)
+                window['principal_graph'].draw_line((principal.lastx, principal.lasty[i]*5), (principal.x, principal.y*5))
+                i += 1
+        
+        
+        if auto_cpu == True:
+            principal.y = cpu.lasty[-1]
+            window['principal_graph'].move(-principal.step_size, 0)
+            window['principal_graph'].draw_line((principal.lastx, principal.lasty[-1]*5), (principal.x, principal.y*5))       
+            principal.lasty.append(principal.y)
+        
+    if event == 'Memória' or auto_memoria == True:
+        
+        if not auto_memoria:
+            window['principal_graph'].erase()
+            auto_cpu = False
+            auto_memoria = True
+            principal.lasty.remove(0)
+            principal.lasty += memoria.lasty
+            i = 0 
+            for principal.y in principal.lasty[1::]:
+                window['principal_graph'].move(-principal.step_size, 0)
+                window['principal_graph'].draw_line((principal.lastx, principal.lasty[i]*5), (principal.x, principal.y*5))
+                i += 1
+
+        if auto_memoria == True:
+            principal.y = memoria.lasty[-1]
+            window['principal_graph'].move(-principal.step_size, 0)
+            window['principal_graph'].draw_line((principal.lastx, principal.lasty[-1]*5), (principal.x, principal.y*5))       
+            principal.lasty.append(principal.y)
 
 window.close()
